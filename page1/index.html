@@ -59,32 +59,27 @@
 <script>
   const button = document.getElementById("playButton");
 
-  // Создаём элемент audio/video
-  const media = document.createElement("video"); // video подходит для MP4, audio для MP3/OGG
+  // Создаём элемент video, чтобы воспроизводить mp4
+  const media = document.createElement("video");
   media.controls = false;
-  media.style.display = "none"; // не показывать плеер
+  media.style.display = "none"; // плеер скрыт
   document.body.appendChild(media);
 
-  // Список доступных файлов (можно добавлять новые)
-  const sources = [
-    "audio1.mp3",
-    "audio2.ogg",
-    "audio3.mp4" // mp4 тоже поддерживается
-  ];
+  // Только твой файл audio3.mp4
+  const audioFile = "audio3.mp4"; 
 
-  // На клик кнопки выбираем первый доступный формат, который есть
   button.addEventListener("click", () => {
-    for (let src of sources) {
-      fetch(src, { method: 'HEAD' }) // проверяем, существует ли файл
-        .then(response => {
-          if (response.ok) {
-            media.src = src;
-            media.play();
-            button.classList.add("hidden");
-            throw "stop"; // прерываем цикл после первого найденного файла
-          }
-        }).catch(e => { if (e !== "stop") console.log(e); });
-    }
+    fetch(audioFile, { method: 'HEAD' }) // проверяем, существует ли файл
+      .then(response => {
+        if (response.ok) {
+          media.src = audioFile;
+          media.play();
+          button.classList.add("hidden");
+        } else {
+          alert("Файл не найден!");
+        }
+      })
+      .catch(err => console.log(err));
   });
 </script>
 
