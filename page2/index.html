@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Аудио с эффектом</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background: linear-gradient(-45deg, #89f7fe, #66a6ff, #c3cfe2, #a1c4fd);
+      background-size: 400% 400%;
+      animation: gradientBG 15s ease infinite;
+      font-family: Arial, sans-serif;
+    }
+
+    @keyframes gradientBG {
+      0% {background-position:0% 50%;}
+      50% {background-position:100% 50%;}
+      100% {background-position:0% 50%;}
+    }
+
+    #playButton {
+      padding: 20px 50px;
+      font-size: 24px;
+      background-color: #1e90ff;
+      color: white;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      box-shadow: 0 0 10px #1e90ff;
+      transition: all 0.3s ease;
+    }
+
+    #playButton:hover {
+      box-shadow: 0 0 30px #1e90ff, 0 0 60px #66a6ff, 0 0 90px #c3cfe2;
+      transform: scale(1.05);
+    }
+
+    #playButton:active {
+      box-shadow: 0 0 50px #1e90ff, 0 0 80px #66a6ff, 0 0 120px #c3cfe2;
+      transform: scale(1.1);
+    }
+
+    .hidden {
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 1s ease;
+    }
+  </style>
+</head>
+<body>
+
+<button id="playButton">Нажми, чтобы прослушать</button>
+
+<script>
+  const button = document.getElementById("playButton");
+
+  // Создаём элемент video, чтобы воспроизводить mp4
+  const media = document.createElement("video");
+  media.controls = false;
+  media.style.display = "none"; // плеер скрыт
+  document.body.appendChild(media);
+
+  // Только твой файл audio2.mp4
+  const audioFile = "audio2.mp4"; 
+
+  button.addEventListener("click", () => {
+    fetch(audioFile, { method: 'HEAD' }) // проверяем, существует ли файл
+      .then(response => {
+        if (response.ok) {
+          media.src = audioFile;
+          media.play();
+          button.classList.add("hidden");
+        } else {
+          alert("Файл не найден!");
+        }
+      })
+      .catch(err => console.log(err));
+  });
+</script>
+
+</body>
+</html>
